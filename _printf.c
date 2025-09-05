@@ -1,71 +1,79 @@
 #include "main.h"
 
-/**
- * _printf - produces output according to a format
- * @format: format string
- *
- * Return: number of characters printed (excluding null byte),
- *         or -1 if format is NULL
- */
+/* print a single character */
+int print_char(char c)
+{
+    write(1, &c, 1);
+    return (1);
+}
+
+/* print a string */
+int print_string(char *s)
+{
+    int count = 0;
+
+    if (!s)
+        s = "(null)";
+    while (*s)
+    {
+        write(1, s, 1);
+        s++;
+        count++;
+    }
+    return (count);
+}
+
+/* print a percent sign */
+int print_percent(void)
+{
+    write(1, "%", 1);
+    return (1);
+}
+
+/* print unknown specifier as %<char> */
+int print_unknown(char c)
+{
+    write(1, "%", 1);
+    write(1, &c, 1);
+    return (2);
+}
+
+/* main _printf function */
 int _printf(const char *format, ...)
 {
-	va_list args;
-	int i = 0, count = 0;
-	char c;
-	char *str;
-	
-	if (format == NULL)
-		return (-1);
-	
-	va_start(args, format);
-	
-	while (format[i])
-	{
-		if (format[i] == '%')
-		{
-			i++;
-			if (!format[i]) /* string ends with % */
-			{
-				va_end(args);
-				return (-1);
-			}
-			if (format[i] == 'c')
-			{
-				c = (char)va_arg(args, int);
-				write(1, &c, 1);
-				count++;
-			}
-			else if (format[i] == 's')
-			{
-				str = va_arg(args, char *);
-				if (str == NULL)
-					str = "(null)";
-				while (*str)
-				{
-					write(1, str, 1);
-					str++;
-					count++;
-				}
-			}
-			else if (format[i] == '%')
-			{
-				write(1, "%", 1);
-				count++;
-			}
-			else /* unknown specifier, print % + char */
-			{
-				write(1, "%", 1);
-				write(1, &format[i], 1);
-				count += 2;
-			}
-		}
-		else
-		{
-			write(1, &format[i], 1);
-			count++;
-		}
-		i++;
-	}
-	va_end(args);
-	return (count);
+    va_list args;
+    int i = 0, count = 0;
+
+    if (!format)
+        return (-1);
+
+    va_start(args, format);
+
+    while (format[i])
+    {
+        if (format[i] == '%')
+        {
+            i++;
+            if (!format[i])
+            {
+                va_end(args);
+                return (-1);
+            }
+            if (format[i] == 'c')
+                count += print_char((char)va_arg(args, int));
+            else if (format[i] == 's')
+                count += print_string(va_arg(args, char *));
+            else if (format[i] == '%')
+                count += print_percent();
+            else
+                count += print_unknown(format[i]);
+        }
+        else
+            count += print_char(format[i]);
+        i++;
+    }
+
+    va_end(args);
+    return (count);
 }
+
