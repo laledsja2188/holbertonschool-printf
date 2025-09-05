@@ -1,0 +1,50 @@
+.TH _PRINTF 3 "05 Sep 2025" "1.0" "Holberton School"
+.SH NAME
+_printf \- prints output according to a format
+.SH SYNOPSIS
+#include "main.h"
+
+int _printf(const char *format, ...);
+.SH DESCRIPTION
+_printf produces output according to a format string. It handles the following conversion specifiers:
+
+.TP
+%c
+Prints a single character.
+
+.TP
+%s
+Prints a string.
+
+.TP
+%d
+Prints a signed decimal integer.
+
+.TP
+%i
+Prints a signed decimal integer.
+
+.TP
+%%
+Prints a percent sign.
+
+.TP
+Other characters
+If an unknown specifier is used, _printf prints a percent sign followed by the unknown character.
+
+.SH RETURN VALUE
+On success, _printf returns the number of characters printed (excluding the null byte).  
+If the format string is NULL, _printf returns -1.
+
+.SH NOTES
+- Does not handle flags, field width, precision, or length modifiers.
+- Output is written to the standard output (stdout).
+- NULL string arguments are printed as "(null)".
+
+.SH EXAMPLE
+int len;
+len = _printf("Hello %s!\n", "world");
+
+.SH AUTHOR
+Holberton School
+
