@@ -4,7 +4,8 @@
  * _printf - produces output according to a format
  * @format: format string
  *
- * Return: number of characters printed
+ * Return: number of characters printed (excluding null byte),
+ *         or -1 if error
  */
 int _printf(const char *format, ...)
 {
@@ -23,13 +24,18 @@ int _printf(const char *format, ...)
         if (format[i] == '%')
         {
             i++;
-            if (format[i] == 'c') 
+            if (!format[i]) /* string ends with % */
+            {
+                va_end(args);
+                return (-1);
+            }
+            if (format[i] == 'c')
             {
                 c = (char)va_arg(args, int);
                 write(1, &c, 1);
                 count++;
             }
-            else if (format[i] == 's') 
+            else if (format[i] == 's')
             {
                 str = va_arg(args, char *);
                 if (str == NULL)
@@ -46,11 +52,10 @@ int _printf(const char *format, ...)
                 write(1, "%", 1);
                 count++;
             }
-            else 
+            else
             {
-                write(1, "%", 1);
-                write(1, &format[i], 1);
-                count += 2;
+                va_end(args);
+                return (-1); /* unknown specifier */
             }
         }
         else
@@ -64,3 +69,4 @@ int _printf(const char *format, ...)
     va_end(args);
     return (count);
 }
+
