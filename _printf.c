@@ -5,7 +5,7 @@
  * @format: format string
  *
  * Return: number of characters printed (excluding null byte),
- *         or -1 if error
+ *         or -1 if format is NULL
  */
 int _printf(const char *format, ...)
 {
@@ -52,10 +52,11 @@ int _printf(const char *format, ...)
                 write(1, "%", 1);
                 count++;
             }
-            else
+            else /* unknown specifier, print % + char */
             {
-                va_end(args);
-                return (-1); /* unknown specifier */
+                write(1, "%", 1);
+                write(1, &format[i], 1);
+                count += 2;
             }
         }
         else
@@ -69,4 +70,3 @@ int _printf(const char *format, ...)
     va_end(args);
     return (count);
 }
-
