@@ -1,13 +1,24 @@
 #include "main.h"
 
-/* print a single character */
+/**
+ * print_char - prints a single character
+ * @c: character to print
+ *
+ * Return: number of characters printed
+ */
 int print_char(char c)
 {
 	write(1, &c, 1);
 	return (1);
 }
 
-/* print a string */
+
+/**
+ * print_string - prints a string
+ * @s: string to print
+ *
+ * Return: number of characters printed
+ */
 int print_string(char *s)
 {
 	int count = 0;
@@ -23,14 +34,25 @@ int print_string(char *s)
 	return (count);
 }
 
-/* print a percent sign */
+
+/**
+ * print_percent - prints a percent sign
+ *
+ * Return: number of characters printed
+ */
 int print_percent(void)
 {
 	write(1, "%", 1);
 	return (1);
 }
 
-/* print unknown specifier as %<char> */
+
+/**
+ * print_unknown - prints unknown specifier as %<char>
+ * @c: unknown specifier character
+ *
+ * Return: number of characters printed
+ */
 int print_unknown(char c)
 {
 	write(1, "%", 1);
@@ -38,7 +60,13 @@ int print_unknown(char c)
 	return (2);
 }
 
-/* main _printf function */
+/**
+ * _printf - produces output according to a format
+ * @format: format string
+ *
+ * Return: number of characters printed (excluding null byte),
+ *         or -1 if format is NULL
+ */
 int _printf(const char *format, ...)
 {
 	va_list args;
